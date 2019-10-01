@@ -1,0 +1,28 @@
+sudo: required
+services:
+  - docker
+
+
+before_install:
+  - docker build -t adityamanocha/react-test -f ./client/Dockerfile.dev ./client
+
+
+script:
+  - docker run -e CI=true adityamanocha/react-test npm test
+
+after_success:
+  - docker build -t adityamanocha/multi-client ./client
+  - docker build -t adityamanocha/multi-nginx ./nginx
+  - docker build -t adityamancha/multi-server ./server
+  - docker build -t adityamanocha/multi-worker ./worker
+
+#Docker login required
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+#Push images to Dockerhub
+
+  - docker push adityamanocha/multi-client
+  - docker push adityamanocha/multi-nginx
+  - docker push adityamanocha/multi-server
+  - docker push adityamanocha/multi-worker
+
