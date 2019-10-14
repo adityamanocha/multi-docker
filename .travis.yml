@@ -13,7 +13,7 @@ script:
 after_success:
   - docker build -t adityamanocha/multi-client ./client
   - docker build -t adityamanocha/multi-nginx ./nginx
-  - docker build -t adityamancha/multi-server ./server
+  - docker build -t adityamanocha/multi-server ./server
   - docker build -t adityamanocha/multi-worker ./worker
 
 #Docker login required
